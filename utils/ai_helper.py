@@ -14,7 +14,7 @@ class AIHelper:
         Initialize with API key
         
         Args:
-            api_key: OpenAI API key (if None, reads from OPENAI_API_KEY env var)
+            api_key: OpenAI API key
         """
         self.api_key = api_key 
         if not self.api_key:
