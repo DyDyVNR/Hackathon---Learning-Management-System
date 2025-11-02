@@ -13,7 +13,7 @@ class Question:
     correct_answer: str
     points: float
     mapped_topic: Optional[str] = None
-    #secondary_topics: List[str] = field(default_factory=list)
+    secondary_topics: List[str] = field(default_factory=list)
     
     def __repr__(self):
         return f"Question(id={self.question_id}, topic={self.mapped_topic})"
@@ -40,7 +40,7 @@ class Student:
     student_id: str
     name: str
     section: str  # e.g., "Section A", "Section B", or class 
-    #responses: List[StudentResponse] = field(default_factory=list)
+    responses: List[StudentResponse] = field(default_factory=list)
     
     def get_total_score(self, questions: List[Question]) -> float:
         """Calculate total score across all responses"""
