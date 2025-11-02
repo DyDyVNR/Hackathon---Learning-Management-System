@@ -3,8 +3,7 @@ OpenAI API helper utilities
 """
 import openai
 import json
-from typing import List, Dict, Optional
-import os
+from typing import List, Dict
 
 class AIHelper:
     """Wrapper for OpenAI API calls"""
@@ -34,23 +33,23 @@ class AIHelper:
             [{"name": "Topic Name", "description": "...", "subtopics": [...]}]
         """
         prompt = f"""
-You are analyzing a course syllabus. Extract all main topics and their subtopics.
+        You are analyzing a course syllabus. Extract all main topics and their subtopics.
 
-Syllabus:
-{syllabus_text}
+        Syllabus:
+        {syllabus_text}
 
-Return ONLY a valid JSON array (no other text) with this structure:
-[
-  {{
-    "name": "Main Topic Name",
-    "description": "Brief description",
-    "week": 1,
-    "subtopics": ["Subtopic 1", "Subtopic 2"]
-  }}
-]
+        Return ONLY a valid JSON array (no other text) with this structure:
+        [
+        {{
+            "name": "Main Topic Name",
+            "description": "Brief description",
+            "week": 1,
+            "subtopics": ["Subtopic 1", "Subtopic 2"]
+        }}
+        ]
 
-Be comprehensive but concise. Identify 5-15 main topics typically.
-"""
+        Be comprehensive but concise. Identify 5-15 main topics typically.
+        """
         
         try:
             response = openai.ChatCompletion.create(
@@ -92,22 +91,22 @@ Be comprehensive but concise. Identify 5-15 main topics typically.
         topics_str = "\n".join(f"- {topic}" for topic in topic_names)
         
         prompt = f"""
-Given this quiz question and list of course topics, identify which topic(s) this question tests.
+        Given this quiz question and list of course topics, identify which topic(s) this question tests.
 
-Question: {question_text}
+        Question: {question_text}
 
-Available Topics:
-{topics_str}
+        Available Topics:
+        {topics_str}
 
-Return ONLY a valid JSON object (no other text) with this structure:
-{{
-  "primary_topic": "Most relevant topic name",
-  "secondary_topics": ["Other relevant topics"],
-  "confidence": 0.95
-}}
+        Return ONLY a valid JSON object (no other text) with this structure:
+        {{
+        "primary_topic": "Most relevant topic name",
+        "secondary_topics": ["Other relevant topics"],
+        "confidence": 0.95
+        }}
 
-If no clear match, use your best judgment based on keywords and concepts.
-"""
+        If no clear match, use your best judgment based on keywords, concepts, and widely accepted textbooks.
+        """
         
         try:
             response = openai.ChatCompletion.create(
@@ -134,10 +133,7 @@ If no clear match, use your best judgment based on keywords and concepts.
                 "confidence": 0.0
             }
     
-    def generate_recommendations(self, 
-                                analytics_summary: Dict,
-                                syllabus_context: str,
-                                quiz_name: str) -> str:
+    def generate_recommendations(self, analytics_summary: Dict, syllabus_context: str, quiz_name: str) -> str:
         """
         Generate AI recommendations for instructor
         
@@ -150,28 +146,28 @@ If no clear match, use your best judgment based on keywords and concepts.
             Formatted recommendations text
         """
         prompt = f"""
-You are an educational consultant analyzing quiz results for an instructor.
+        You are an educational consultant analyzing quiz results for an instructor.
 
-Quiz: {quiz_name}
+        Quiz: {quiz_name}
 
-Performance Summary:
-{json.dumps(analytics_summary, indent=2)}
+        Performance Summary:
+        {json.dumps(analytics_summary, indent=2)}
 
-Course Context:
-{syllabus_context[:500]}...
+        Course Context:
+        {syllabus_context[:500]}... # Truncated for context if too long
 
-Based on this data, generate 5-7 specific, actionable recommendations to help students improve.
+        Based on this data, generate 5-7 specific, actionable recommendations to help students improve.
 
-Consider:
-1. Which topics need more instructional time
-2. Teaching strategies for challenging concepts
-3. Differences between class sections (if any)
-4. Additional resources or activities
-5. Assessment design improvements
+        Consider:
+        1. Which topics need more instructional time
+        2. Teaching strategies for challenging concepts
+        3. Differences between class sections (if any)
+        4. Additional resources or activities
+        5. Assessment design improvements
 
-Format as a numbered list with brief explanations (2-3 sentences each).
-Be specific and practical.
-"""
+        Format as a numbered list with brief explanations (2-3 sentences each).
+        Be specific and practical.
+        """
         
         try:
             response = openai.ChatCompletion.create(
