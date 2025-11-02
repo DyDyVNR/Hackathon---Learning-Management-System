@@ -9,14 +9,14 @@ import os
 class AIHelper:
     """Wrapper for OpenAI API calls"""
     
-    def __init__(self, api_key: Optional[str] = None):
+    def __init__(self, api_key):
         """
         Initialize with API key
         
         Args:
             api_key: OpenAI API key (if None, reads from OPENAI_API_KEY env var)
         """
-        self.api_key = api_key or os.getenv('OPENAI_API_KEY')
+        self.api_key = api_key 
         if not self.api_key:
             raise ValueError("OpenAI API key not provided")
         
