@@ -52,7 +52,7 @@ class AIHelper:
         """
         
         try:
-            response = openai.ChatCompletion.create(
+            response = openai.chat.completions.create(
                 model="gpt-3.5-turbo",
                 messages=[
                     {"role": "system", "content": "You are a helpful assistant that extracts structured information from educational content."},
@@ -62,7 +62,7 @@ class AIHelper:
                 max_tokens=1500
             )
             
-            content = response.choices[0].message.content.strip()
+            content = str(response.choices[0].message.content).strip()
             
             # Try to parse JSON
             topics = json.loads(content)
@@ -109,7 +109,7 @@ class AIHelper:
         """
         
         try:
-            response = openai.ChatCompletion.create(
+            response = openai.chat.completions.create(
                 model="gpt-3.5-turbo",
                 messages=[
                     {"role": "system", "content": "You are an expert at mapping educational assessment questions to course topics."},
@@ -118,8 +118,8 @@ class AIHelper:
                 temperature=0.2,
                 max_tokens=200
             )
-            
-            content = response.choices[0].message.content.strip()
+
+            content = str(response.choices[0].message.content).strip()
             mapping = json.loads(content)
             
             return mapping
@@ -170,7 +170,7 @@ class AIHelper:
         """
         
         try:
-            response = openai.ChatCompletion.create(
+            response = openai.chat.completions.create(
                 model="gpt-4",
                 messages=[
                     {"role": "system", "content": "You are an experienced educational consultant specializing in data-driven teaching improvements."},
@@ -179,9 +179,9 @@ class AIHelper:
                 temperature=0.7,
                 max_tokens=800
             )
-            
-            return response.choices[0].message.content
-            
+
+            return str(response.choices[0].message.content)
+
         except Exception as e:
             print(f"Error generating recommendations: {e}")
             return "Error generating recommendations. Please try again."
